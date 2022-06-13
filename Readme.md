@@ -40,7 +40,7 @@ https://hub.docker.com/_/caddy
 
 Here's how to compile some golang source code to a executable file without installing go
 
-1. `docker run --rm -v "$PWD":/app -w /app golang:1.13 go build -v`
+> `docker run --rm -v "$PWD":/app -w /app golang:1.13 go build -v`
 
 We are using the `golang` official image with the tag `1.13`. If the tag is not specified then you'll get the `latest` tag by default.
 
@@ -50,7 +50,9 @@ And there are similar images available for most languages!
 
 ## Demo 3: Interacting with a container
 
-`docker run -it alpine sh` will run an **alpine** linux container allowing us to interact in a terminal (`-it`) and will run the `sh` (aka shell) command.
+Run an **alpine** Linux container allowing us to interact in a terminal (`-it`) and run the `sh` (aka shell) command on startup:
+
+> `docker run -it alpine sh`
 
 To run a command within an existing/running container use `docker exec -it <id/name> <command>`
 
@@ -90,10 +92,12 @@ To find out where the actual files are being stored, run `docker inspect -f '{{ 
 * `docker container logs -f <id/name>` to stream a given containers logs
 * `docker container stop <id/name>` to stop containers
 * `docker exec -it <id/name> <command>` run a command in an existing container
+* `docker container prune` to delete unused (not running) containers
 
 ### Images
-* `docker image ls" to list local images (add `-a` to see intermediate images)
+* `docker image ls` to list local images (add `-a` to see intermediate images)
 * `docker image prune` to delete dangling (unused) images
 
 ### Volumes
-* `docker inspect -f '{{ json .Mounts }}' <container name, full or short id> | jq` view a containers volumes
+* `docker inspect -f '{{ json .Mounts }}' <id/name> | jq` view a containers volumes
+
