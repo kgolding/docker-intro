@@ -56,6 +56,36 @@ Run an **alpine** Linux container allowing us to interact in a terminal (`-it`) 
 
 To run a command within an existing/running container use `docker exec -it <id/name> <command>`
 
+## Demo 4: Building our own image
+
+You build your own images using a `Dockerfile` such as:
+
+```
+FROM alpine
+RUN apk add micro-tetris
+CMD ["tetris"]
+```
+
+To build the local image, including tagging it `microtetris` (aka image name):
+
+> `docker build -t microtetris .`
+
+We can now run a container using the new image:
+
+> docker run -it microtetris
+
+Local images can be pushed into a docker registry and shared with the world!
+
+# Simple big picture summary _so far_
+
+* `Docker` hub is a registry of images (you can host you own using https://hub.docker.com/_/registry)
+* `Images` (you can create your own with a `Dockerfile`) are made of `layers` and are used to run:
+    * `Containers` which have:
+        * IDs &amp; names
+        * `Volumes`
+            * Which can be `mounted` to persist storage
+        * ... more
+
 # Container names
 
 When a container starts, it is given an ID and a random name such as "agitated_mahavira", but we can define a name of our choice using the `--name` option. e.g. `docker run --name MyContainerName caddy`
@@ -78,9 +108,9 @@ To find out where the actual files are being stored, run `docker inspect -f '{{ 
 
 @TODO Example?
 
-## Mini docker cheat sheet
+# Mini docker cheat sheet
 
-### Containers
+## Containers
 * `docker run [options] <image name> [command]`
   * `-d` run in the background, use `docker container ls` to see running containers
   * `-p <external port>:<container port>` to allow access/open/map a containers port
@@ -94,10 +124,11 @@ To find out where the actual files are being stored, run `docker inspect -f '{{ 
 * `docker exec -it <id/name> <command>` run a command in an existing container
 * `docker container prune` to delete unused (not running) containers
 
-### Images
+## Images
 * `docker image ls` to list local images (add `-a` to see intermediate images)
 * `docker image prune` to delete dangling (unused) images
+* `docker build -t <name> .` to build an image from a `Dockerfile` in the same directory
 
-### Volumes
+## Volumes
 * `docker inspect -f '{{ json .Mounts }}' <id/name> | jq` view a containers volumes
 
