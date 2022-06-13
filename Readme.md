@@ -66,21 +66,23 @@ RUN apk add micro-tetris
 CMD ["tetris"]
 ```
 
-To build the local image, including tagging it `microtetris` (aka image name):
+To build the local image, including tagging it `microtetris` (aka the image name):
 
 > `docker build -t microtetris .`
 
 We can now run a container using the new image:
 
-> docker run -it microtetris
+> `docker run -it microtetris`
 
 Local images can be pushed into a docker registry and shared with the world!
 
+Each command in a `Dockerfile` creates a new layer, and the layers are cached to help speed up future builds.
+
 # Simple big picture summary _so far_
 
-* `Docker` hub is a registry of images (you can host you own using https://hub.docker.com/_/registry)
-* `Images` (you can create your own with a `Dockerfile`) are made of `layers` and are used to run:
-    * `Containers` which have:
+* `Docker hub` is a registry of images (you can host you own using https://hub.docker.com/_/registry)
+* `Images` are made of `layers`, and are built from a `Dockerfile`. Images are used to run:
+    * `Containers` have:
         * IDs &amp; names
         * `Volumes`
             * Which can be `mounted` to persist storage
