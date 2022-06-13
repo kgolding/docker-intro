@@ -18,7 +18,7 @@ You can either:
 
 # Live demo's
 
-## DEMO 1: Caddy the web server
+## Demo 1: Caddy the web server
 
 **Caddy** is web server, which we'll use in a very simple way to host some files.
 
@@ -41,7 +41,7 @@ https://hub.docker.com/_/caddy
 12. Stream the containers log `docker container logs -f <id/name>`
 13. Stop the container using `docker container stop <id/name>`
 
-## DEMO 2: Compiling and running go code
+## Demo 2: Compiling and running go code
 
 Here's how to compile some golang source code to a executable file without installing go. There's a super simple go application source code in `main.go` to test with.
 
