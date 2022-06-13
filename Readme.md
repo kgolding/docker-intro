@@ -29,7 +29,7 @@ https://hub.docker.com/_/caddy
     * _Use `Ctrl-C` to exit the docker container._
 1. `docker run -p 8080:80 caddy` Now we can access port 80 in the container via 8080 on the host e.g. http://localhost:8080/
     * _Use `Ctrl-C` to exit the docker container._
-3. Lets create web page `echo "Hello world" > www/index.html`
+3. Lets create web page `mkdir www` and `echo "Hello world" > www/index.html`
 4. `docker run -p 8080:80 -v "$PWD/www/index.html":/usr/share/caddy/index.html caddy` Here we bind/mount a local file into the container, and now we can see our index.html file at http://localhost:8080/
     * _Use `Ctrl-C` to exit the docker container._
 7. Create a second web page `echo "Hello world 2" > www/index2.html`
@@ -39,12 +39,13 @@ https://hub.docker.com/_/caddy
 10. View the running containers with `docker container ls`
 11. View the all containers with `docker container ls -a` and tidy them up using `docker container prune`
 12. Stream the containers log `docker container logs -f <id/name>`
+13. Stop the container using `docker container stop <id/name>`
 
-## DEMO 2: Compiling go code
+## DEMO 2: Compiling and running go code
 
-Here's how to compile some golang source code to a executable file without installing go
+Here's how to compile some golang source code to a executable file without installing go. There's a super simple go application source code in `main.go` to test with.
 
-> `docker run --rm -v "$PWD":/app -w /app golang:1.13 go build -v`
+> `docker run --rm -v "$PWD":/app -w /app golang:1.13 go run -v helloworld.go`
 
 We are using the `golang` official image with the tag `1.13`. If the tag is not specified then you'll get the `latest` tag by default.
 
