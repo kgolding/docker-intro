@@ -7,38 +7,38 @@ Docker is a set of tools for building, running and managing containers aka light
 
 # Why
 
-It lets you spin up a new virtual machine from a massive range of 'templates' without worrying about installing dependencies or library versions as each container has all of it's required files/libraries etc. The docker container runs in an isolation (although you can let it access local files if you want too).
+It lets you spin up a new virtual machine from a massive range of 'templates' without worrying about installing dependencies or library versions as each container has all of it's required files/libraries etc. The docker container runs in isolation (although you can let it access local files if you want too).
 
 # Prerequisites
 
 You can either:
 
  * Install docker locally
- * Use https://labs.play-with-docker.com/ (requires login)
+ * Use https://labs.play-with-docker.com/ (requires free login)
 
 # Live demo's
 
-## DEMO: Caddy the web server
+## DEMO 1: Caddy the web server
 
-`Caddy` is web server, which we'll use in a simple mode to host an html file.
+**Caddy** is web server, which we'll use in a very simple way to host some files.
 
 https://hub.docker.com/_/caddy
 
 ### Running caddy
 
-1. `docker run caddy` will run the container, but we have now way to communicate with it!
-    * `Caddy` is a docker image. It is made up of layers, and docker will automatically download the image/layers as needed. These are keep locally to make future runs much quicker.
-1. `docker run -p 8080:80 caddy` Now we can access port 80
+1. `docker run caddy` will run the container, but we have now way to communicate with it! _Use `Ctrl-C` to exit the docker container._
+    * In this command `caddy` is referring to a docker image. It is made up of layers, and docker will automatically download the image/layers as needed and these are keep locally to make future runs much quicker.
+1. `docker run -p 8080:80 caddy` Now we can access port 80. _Use `Ctrl-C` to exit the docker container._
 1. Lets create web page `echo "Hello world" > www/index.html`
-1. `docker run -p 8080:80 -v "$PWD/www/index.html":/usr/share/caddy/index.html caddy` Now we can see our index.html file
+1. `docker run -p 8080:80 -v "$PWD/www/index.html":/usr/share/caddy/index.html caddy` Now we can see our index.html file at http://localhost:8080/ _Use `Ctrl-C` to exit the docker container._
 1. `docker run -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy` Now, any files in www can be accessed
-1. Create a second web page `echo "Hello world 2" > www/index2.html`
+1. Create a second web page `echo "Hello world 2" > www/index2.html` _Use `Ctrl-C` to exit the docker container._
 1. Now lets run the docker container in the background by ading the `-d` switch `docker run -d -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy`
 1. View the running containers with `docker container ls`
 1. View the all containers with `docker container ls -a` and tidy them up using `docker container prune`
 1. Stream the containers log `docker container logs -f <container name, full or short id>`
 
-## DEMO: Compiling go code
+## DEMO 2: Compiling go code
 
 Here's how to compile some golang source code to a executable file without installing go
 
