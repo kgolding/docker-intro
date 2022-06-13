@@ -24,17 +24,21 @@ You can either:
 
 https://hub.docker.com/_/caddy
 
-1. `docker run caddy` will run the container, but we have now way to communicate with it! _Use `Ctrl-C` to exit the docker container._
+1. `docker run caddy` will run the container, but we have now way to communicate with it!
     * In this command `caddy` is referring to a docker image. It is made up of layers, and docker will automatically download the image/layers as needed and these are keep locally to make future runs much quicker.
-1. `docker run -p 8080:80 caddy` Now we can access port 80. _Use `Ctrl-C` to exit the docker container._
-1. Lets create web page `echo "Hello world" > www/index.html`
-1. `docker run -p 8080:80 -v "$PWD/www/index.html":/usr/share/caddy/index.html caddy` Now we can see our index.html file at http://localhost:8080/ _Use `Ctrl-C` to exit the docker container._
-1. `docker run -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy` Now, any files in www can be accessed
-1. Create a second web page `echo "Hello world 2" > www/index2.html` _Use `Ctrl-C` to exit the docker container._
-1. Now lets run the docker container in the background by ading the `-d` switch `docker run -d -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy`
-1. View the running containers with `docker container ls`
-1. View the all containers with `docker container ls -a` and tidy them up using `docker container prune`
-1. Stream the containers log `docker container logs -f <id/name>`
+    * _Use `Ctrl-C` to exit the docker container._
+1. `docker run -p 8080:80 caddy` Now we can access port 80 in the container via 8080 on the host e.g. http://localhost:8080/
+    * _Use `Ctrl-C` to exit the docker container._
+3. Lets create web page `echo "Hello world" > www/index.html`
+4. `docker run -p 8080:80 -v "$PWD/www/index.html":/usr/share/caddy/index.html caddy` Here we bind/mount a local file into the container, and now we can see our index.html file at http://localhost:8080/
+    * _Use `Ctrl-C` to exit the docker container._
+7. Create a second web page `echo "Hello world 2" > www/index2.html`
+6. `docker run -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy` This time we bind a directory instead, and any files in www can be accessed by the container e.g. http://localhost:8080/index2.html
+    * _Use `Ctrl-C` to exit the docker container._
+9. Now lets run the docker container in the background by ading the `-d` switch `docker run -d -p 8080:80 -v "$PWD/www":/usr/share/caddy caddy`
+10. View the running containers with `docker container ls`
+11. View the all containers with `docker container ls -a` and tidy them up using `docker container prune`
+12. Stream the containers log `docker container logs -f <id/name>`
 
 ## DEMO 2: Compiling go code
 
