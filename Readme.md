@@ -78,19 +78,9 @@ Local images can be pushed into a docker registry and shared with the world!
 
 Each command in a `Dockerfile` creates a new layer, and the layers are cached to help speed up future builds.
 
-# Simple big picture summary _so far_
-
-* `Docker hub` is a registry of images (you can host you own using https://hub.docker.com/_/registry)
-* `Images` are made of `layers`, and are built from a `Dockerfile`. Images are used to run:
-    * `Containers` have:
-        * IDs &amp; names
-        * `Volumes`
-            * Which can be `mounted` to persist storage
-        * ... more
-
 # Container names
 
-When a container starts, it is given an ID and a random name such as "agitated_mahavira", but we can define a name of our choice using the `--name` option. e.g. `docker run --name MyContainerName caddy`
+When a container starts, it is given an ID and a random name such as "agitated_mahavira", but we can define a name of our choice using the `--name` option. e.g. `docker run --name mycaddy caddy`
 
 Containers can be referred to by name, full ID or short ID as displayed in the `docker container ls` output.
 
@@ -104,11 +94,70 @@ From our Caddy example above, we could add a volume by adding a `-v` option whic
 
 To find out where the actual files are being stored, run `docker inspect -f '{{ json .Mounts }}' mycaddy | jq`
 
+# Simple big picture summary _so far_
+
+* A `Dockerfile` is used to build...
+    * An `image` which is made of `layers` (created by each `Dockerfile` instruction), and when run it creates a...
+        * `Container` which has:
+            * `id`
+            * `name`
+            * `volume` (zero or more)
+                * Which can be `mounted` to persist storage
+            * `ports` that can be exposed
+            * and more
+* `Docker hub` is a registry of images (you can host you own using https://hub.docker.com/_/registry)
+
+---
+
 # Docker-compose
 
 `docker-compose` lets us run multiple containers from a single configuration file.
 
-@TODO Example?
+This example dockerfile runs both a mysql database container, and a phpmyadmin container that connects to the mysql container using dockers build-in dns.
+
+```
+version: '3'
+ 
+services:
+  db:
+    image: mysql:5.7
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    volumes:
+      - dbdata:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 0
+      PMA_USER: db_user
+      PMA_PASSWORD: db_user_pass
+    ports:
+      - 8081:80
+volumes:
+  dbdata:
+```
+
+Run using the following command in the same directory as the docker-compose.yml file:
+
+> `docker-compose up`
+
+Now open http://localhost:8081/
+
+Notes:
+* Port 8081 is mapped to port 80 on the phpmyadmin container
+* The mysql data will be persisted in a `dbdata` volume
+* To directly connect to the mysql server from the host you would need to add a ports entry in the db services section
+
+---
 
 # Mini docker cheat sheet
 
@@ -133,4 +182,10 @@ To find out where the actual files are being stored, run `docker inspect -f '{{ 
 
 ## Volumes
 * `docker inspect -f '{{ json .Mounts }}' <id/name> | jq` view a containers volumes
+
+## Docker-compose
+* `docker-compose up` runs the docker-compose.yml file in the same directory, add `-d` to run in the background
+* `docker-compose down` runs the docker-compose.yml file in the same directory
+* `docker-compose logs` displays the logs, add `-f` to stream the logs
+
 
